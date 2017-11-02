@@ -1,0 +1,8 @@
+digraph G{
+nodo_32478 [label="32478/ Q457"]
+nodo_32478 -> nodo_16548
+nodo_16548 [label="16548/ Q355"]
+nodo_32478 -> nodo_56489
+nodo_56489 [label="56489/ Q605"]
+
+}

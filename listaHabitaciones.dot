@@ -1,0 +1,1 @@
+digraph habitaciones {n01 [label="5 / 20 / 520"] ; n01 -> n02 ;n02 [label="2 / 65 / 265"] ; n02 -> n01}
