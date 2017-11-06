@@ -25,7 +25,7 @@ matriz = Matriz()
 
 def jsonDefault(object):
     return object.__dict__
-
+############################## USUARIOS #########################
 @app.route('/insertarUsuario',methods=['POST']) 
 def insertarUsuario():
     parametro = listaUsuarios.validarUser(request.form["user"],request.form["pass"])
@@ -47,35 +47,21 @@ def validarUsuario():
     else:
         return "false"
 
-@app.route('/habitaciones', methods=['POST'])
-def cargaHabitaciones():
-    nivel = ""
-    numero = ""
-    mensajes = ET.fromstring(request.form["xmlTexto"])
-    #root = mensajes.getroot()
-    for mensaje in mensajes.iterfind('habitacion'):
-        nivel = mensaje[0].text #nivel
-        numero = mensaje[1].text #numero
-        habitaciones.insertar(Nodo(numero,nivel))
 
-    habitaciones.imprimir()
-    habitaciones.graficarLista()
-    return "successful"
+@app.route('/modificarUsuario',methods=['POST']) 
+def modificarUsuario():
+    nuevoNodo = NodoDoble(request.form["user"],request.form["pass"],request.form["address"],request.form["phone"],request.form["age"])
+    response = listaUsuarios.modificarUsuario(nuevoNodo)
+    listaUsuarios.imprimir()
+    listaUsuarios.graficarLista()
+    return response
 
-@app.route('/habitacionesB', methods=['POST'])
-def cargaHabitacionesB():
-    nivel = ""
-    numero = ""
-    mensajes = ET.fromstring(request.data)
-    #root = mensajes.getroot()
-    for mensaje in mensajes.iterfind('habitacion'):
-        nivel = mensaje[0].text #nivel
-        numero = mensaje[1].text #numero
-        habitaciones.insertar(Nodo(numero,nivel))
-
-    habitaciones.imprimir()
-    habitaciones.graficarLista()
-    return "successful"    
+@app.route('/eliminarUsuario',methods=['POST']) 
+def eliminarUsuario():
+    response = listaUsuarios.eliminarUsuario(request.data)
+    listaUsuarios.imprimir()
+    listaUsuarios.graficarLista()
+    return response
 
 @app.route('/usuarios', methods=['POST'])
 def cargaUsuarios():
@@ -101,6 +87,47 @@ def cargaUsuarios():
 
     return "successful"
 
+
+############################## HABITACIONES #########################
+@app.route('/habitaciones', methods=['POST'])
+def cargaHabitaciones():
+    nivel = ""
+    numero = ""
+    mensajes = ET.fromstring(request.form["xmlTexto"])
+    #root = mensajes.getroot()
+    for mensaje in mensajes.iterfind('habitacion'):
+        nivel = mensaje[0].text #nivel
+        numero = mensaje[1].text #numero
+        habitaciones.insertar(Nodo(nivel,numero))
+
+    habitaciones.imprimir()
+    habitaciones.graficarLista()
+    return "successful"
+
+@app.route('/eliminarHabitacion',methods=['POST']) 
+def eliminarHabitacion():
+    response = habitaciones.eliminar(request.data)
+    habitaciones.imprimir()
+    habitaciones.graficarLista()
+    return response
+
+@app.route('/habitacionesB', methods=['POST'])
+def cargaHabitacionesB():
+    nivel = ""
+    numero = ""
+    mensajes = ET.fromstring(request.data)
+    #root = mensajes.getroot()
+    for mensaje in mensajes.iterfind('habitacion'):
+        nivel = mensaje[0].text #nivel
+        numero = mensaje[1].text #numero
+        habitaciones.insertar(Nodo(nivel,numero))
+
+    habitaciones.imprimir()
+    habitaciones.graficarLista()
+    return "successful"    
+
+
+############################## RESERVAS #########################
 @app.route('/reservas', methods=['POST'])
 def cargaReservas():
     cliente = ""
