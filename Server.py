@@ -195,6 +195,10 @@ def cargaReservas():
 def he():
     return "hola Mundo"+ str(request.form["dato"])
 
+@app.route('/hola2',methods=['POST'])
+def hola():
+    return "hola Mundo"+ str(request.data)
+
 if __name__ == "__main__":
     #app.run(debug=True, host='192.10.1.1')
     #app.run(debug=True, host='192.168.1.3')
