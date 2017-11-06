@@ -1,7 +1,3 @@
-from ArbolAVL import ArbolAVL 
-from ArbolB import ArbolB 
-from ArbolB import NodoB 
-
 class NodoDoble(object):
     def __init__(self, nombre = None , password= None, direccion = None, phone = None, age = None, prox = None , ant = None):
         self.nombre = nombre 
@@ -51,6 +47,28 @@ class ListaDobleEnlazada(object):
                 return "true"            
             aux = aux.prox
             
+
+    def modificarUsuario(self, nodoNuevo = None):
+        aux = self.primero
+        while aux != None:
+            if aux.nombre == nodoNuevo.nombre:
+                print "usuario encontrado :"+ str(aux.nombre) 
+                aux = nodoNuevo
+                return aux            
+            aux = aux.prox
+        return "Informacion Incorrecta"
+
+    def eliminarUsuario(self, usuario):
+        aux = self.primero
+        while aux != None:
+            if aux.nombre == usuario:
+                if aux.ant != None: 
+                    aux.ant.prox = aux.prox
+                if aux.prox != None :
+                    aux.prox.ant = aux.ant
+                return "Eliminado Correctamente " + str(usuario)
+            aux = aux.prox  
+        return "Informacion Incorrecta"    
 
     def graficarLista(self):
         archivo = open("listaUsuarios.dot", 'w')

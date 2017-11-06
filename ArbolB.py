@@ -184,7 +184,7 @@ class ArbolB(object):
 	def dibujarArbol(self ):
 		archivo=open('arbolB.dot', 'w')
 		archivo.write('digraph G{\n')
-		archivo.write("node [shape = record];\n");
+		archivo.write("node [shape = record];\n");3
 		archivo.write("rankdir = TD;\n");
 		self.grabarArchivo(self.inicio , archivo)
 		archivo.write('}')
@@ -218,7 +218,57 @@ class ArbolB(object):
 					self.grabarArchivo(nodo.ramas[j],archivo)
 					j+=1
 					
+		
 					
+	#MODIFICAR NOMBRE
+	def actualizarNombre(self, idFechaIngreso, nuevaFecha):
+		nodoB = NodoB(idFechaIngreso, "1", "1", "1", "1")
+		self.actualizarNombreArbolB(nodoB, nuevaFecha, self.inicio)
+		return "Nombre Actualizado"
+	
+	#ACTUALIZAR NOMBRE 
+	def actualizarNombreArbolB(self, nodoB, nuevaFecha, raiz):
+		pos = 0
+		pos = self.existeNodo(nodoB, raiz)
+		if(self.existe2 == True):
+			raiz.claves[pos - 1].Nombre = nuevaFecha			
+		else:
+			self.actualizarNombreArbolB(nodoB, nuevaFecha, raiz.ramas[pos])					
+	
+	
+	#Eliminar
+	def Eliminar(self, idEliminar):
+		self.InsertarNodosLista(self.inicio)
+		raizLista = claseListaB.retornarLista()
+		self.inicio = Pagina()
+		
+		while raizLista != None:
+			if raizLista.index != None and raizLista.nodoArbolB.idFechaIngreso != idEliminar:
+				self.InsertarArbolB(raizLista.nodoArbolB, self.inicio)
+			raizLista = raizLista.siguiente		
+		
+		claseListaB.Limpiar()
+		return self.inicio
+	
+	#INSERTAR NODOS EN LISTA
+	def InsertarNodosLista(self, raiz):
+		nodo = raiz		
+		
+		if(nodo == None):
+			print("No Hay Nada")
+		else:
+			if (nodo.cuentas != 0):
+				k=1
+				while k <= nodo.cuentas:
+					claseListaB.insertar(nodo.claves[k - 1])					
+					k+=1
+					
+				j=0
+				while j <= nodo.cuentas:
+					self.InsertarNodosLista(nodo.ramas[j])
+					j+=1
+					
+											
 					
 					
 	
