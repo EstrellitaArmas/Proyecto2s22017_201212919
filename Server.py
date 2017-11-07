@@ -205,6 +205,21 @@ def eliminarPago():
     sistemaPago.eliminarINI(request.data)
     sistemaPago.graficarArbolAVL()
     return "successful"
+
+@app.route('/eliminarHistoria', methods=['POST'])
+def eliminarHistoria():
+    objFile = json.loads(request.data)
+    historial.Eliminar(objFile["idFechaIngreso"])
+    historial.dibujarArbol() 
+    return "successful"
+
+@app.route('/modificarHistoria', methods=['POST'])
+def modificarHistoria():
+    objFile = json.loads(request.data)
+    nodob = NodoB("-", objFile["nuevoNombre"], objFile["total"], objFile["habitacion"],"-",objFile["fechaSalida"])
+    response = historial.actualizarNombre(objFile["idFechaIngreso"], nodob)
+    historial.dibujarArbol() 
+    return response
 ###################################RESPUESTAS##########################
 
 #################################################################################################

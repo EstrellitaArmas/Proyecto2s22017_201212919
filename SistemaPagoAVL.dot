@@ -1,6 +1,0 @@
-digraph G{
-nodo_12345 [label="12345/ Q605"]
-nodo_12345 -> nodo_56789
-nodo_56789 [label="56789/ Q605"]
-
-}

@@ -1,4 +1,4 @@
-from ArbolAVL import ArbolAVL 
+from ListaB import ListaB
 
 class NodoB(object):
 	def __init__(self, idFechaIngreso=None, nombreCliente=None, total = None, habitacion = None, fechaIngreso = None, fechaSalida = None):
@@ -15,6 +15,7 @@ class Pagina(object):
 		self.claves = claves
 		self.cuentas = cuentas
 
+claseListaB = ListaB()		
 class ArbolB(object):
 	def __init__(self):
 		self.inicio = Pagina()
@@ -24,8 +25,9 @@ class ArbolB(object):
 		self.existe = False
 		self.existe2 = False
 		self.carpetaEncontrada = None
-		
-############################################################################		
+
+	
+######################### INSERTAR ###################################################		
 	#Crea el Nodo del Arbol B
 	def crearNodoInsertar(self, idFechaIngreso, nombreCliente, total, habitacion,fechaIngreso,fechaSalida):
 		nodob = NodoB(idFechaIngreso, nombreCliente, total, habitacion,fechaIngreso,fechaSalida)
@@ -130,7 +132,7 @@ class ArbolB(object):
 		raiz.cuentas = val
 		self.enlace = Mder
 		
-	
+############################## BUSCAR #####################################	
 	#Virificar si Existe el Nodo	
 	def existeNodo(self, clave, raiz):
 		valor =0
@@ -154,7 +156,7 @@ class ArbolB(object):
 			
 		
 		return valor
-###########################################################################
+
 	#Buscar Nodo
 	def retornarNodoArbolB(self, idBuscar, nombreCliente):	
 		#self.inicio = raiz 
@@ -179,10 +181,10 @@ class ArbolB(object):
 		return valorEncontrado
 
 
-#############################################################################
+############################# GRAFICAR ######################################
 	#Crear Archivo
 	def dibujarArbol(self ):
-		archivo=open('arbolB.dot', 'w')
+		archivo=open('arbolBHistorial.dot', 'w')
 		archivo.write('digraph G{\n')
 		archivo.write("node [shape = record];\n");3
 		archivo.write("rankdir = TD;\n");
@@ -218,9 +220,7 @@ class ArbolB(object):
 					self.grabarArchivo(nodo.ramas[j],archivo)
 					j+=1
 					
-		
-					
-	#MODIFICAR NOMBRE
+############### MODIFICAR NOMBRE ################
 	def actualizarNombre(self, idFechaIngreso, nuevaFecha):
 		nodoB = NodoB(idFechaIngreso, "1", "1", "1", "1")
 		self.actualizarNombreArbolB(nodoB, nuevaFecha, self.inicio)
@@ -231,12 +231,14 @@ class ArbolB(object):
 		pos = 0
 		pos = self.existeNodo(nodoB, raiz)
 		if(self.existe2 == True):
-			raiz.claves[pos - 1].Nombre = nuevaFecha			
+			raiz.claves[pos - 1].nombreCliente = nuevaFecha.nombreCliente
+			raiz.claves[pos - 1].total = nuevaFecha.total
+			raiz.claves[pos - 1].habitacion = nuevaFecha.habitacion
+			raiz.claves[pos - 1].fechaSalida = nuevaFecha.fechaSalida
 		else:
 			self.actualizarNombreArbolB(nodoB, nuevaFecha, raiz.ramas[pos])					
 	
-	
-	#Eliminar
+################# Eliminar ########################
 	def Eliminar(self, idEliminar):
 		self.InsertarNodosLista(self.inicio)
 		raizLista = claseListaB.retornarLista()

@@ -316,7 +316,7 @@ class ArbolAVL(object):
 ######### GRAFICA #########                   
     def graficarArbolAVL(self):
         self.digraf = "digraph G{\n"
-        archivo = open("SistemaPagoAVL.dot", 'w')
+        archivo = open("arbolAVLSistemaPago.dot", 'w')
         self.graficarPreOrden(self.raiz)
         self.digraf += "\n}"
         archivo.write(self.digraf)
