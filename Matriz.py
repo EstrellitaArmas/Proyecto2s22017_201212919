@@ -587,6 +587,7 @@ class Matriz():
     def eliminarMatriz(self, nuevoNodo):
         if self.existeMes(nuevoNodo) == True:
             nodoMesTemp = self.obtenerMes(nuevoNodo) #esta en el nodo de un mes en especifico
+            nodoAnioTemp = self.obtenerAnio(nuevoNodo)
             if nodoMesTemp.abajo != None:
                 temp1 = nodoMesTemp.abajo
                 while temp1 != None:
@@ -632,3 +633,19 @@ class Matriz():
                                     return temp3
                                 temp2 = temp2.profundidad
                     temp1 = temp1.abajo
+
+            
+        #eliminacion de cabeceras si es necesario
+            nodoMesTemp = self.obtenerMes(nuevoNodo) #esta en el nodo de un mes en especifico
+            nodoAnioTemp = self.obtenerAnio(nuevoNodo)
+            if nodoMesTemp.abajo == None :
+                if nodoMesTemp.izquierda != None: 
+                    nodoMesTemp.izquierda.derecha = nodoMesTemp.derecha
+                if nodoMesTemp.derecha != None :
+                    nodoMesTemp.derecha.izquierda = nodoMesTemp.izquierda
+
+            if nodoAnioTemp.derecha == None:
+                if nodoAnioTemp.arriba != None: 
+                    nodoAnioTemp.arriba.abajo = nodoAnioTemp.abajo
+                if nodoAnioTemp.abajo != None :
+                    nodoAnioTemp.abajo.arriba = nodoAnioTemp.arriba

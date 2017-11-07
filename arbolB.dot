@@ -1,9 +1,0 @@
-digraph G{
-node [shape = record];
-rankdir = TD;
-activo_david [label= "<r0> | <cl1>Fecha: 20102018 / david &#92; | <r1> "];
-activo_david:r0 -> activo_marco;
-activo_david:r1 -> activo_david;
-activo_marco [label= "<r0> | <cl1>Fecha: 17112017 / marco &#92; | <r1> | <cl2>Fecha: 17112017 / marco &#92; | <r2> "];
-activo_david [label= "<r0> | <cl1>Fecha: 20102018 / david &#92; | <r1> | <cl2>Fecha: 27052011 / galindo &#92; | <r2> | <cl3>Fecha: 27052011 / galindo &#92; | <r3> "];
-}

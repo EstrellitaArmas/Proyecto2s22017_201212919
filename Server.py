@@ -186,9 +186,23 @@ def cargaReservas():
     historial.dibujarArbol() 
     return "successful"
                 
+@app.route('/eliminarReserva',methods=['POST']) 
+def eliminarReserva():
+    #reservaJson = request.form["reservaJsonStr"]
+    reservaJson = request.data
+    objReserva = json.loads(reservaJson)
+    
+    anio = objReserva["anio"]
+    numeroMes = objReserva["numeroMes"]
+    mes = matriz.verMes(numeroMes)
+    dia = objReserva["dia"]
+    
+    nuevoNodo = NodoMatriz(mes, numeroMes, anio, dia)
+    matriz.eliminarMatriz(nuevoNodo)
+    matriz.ArchivoMatriz()
+    
+    return "successful"
    
-###################################RESPUESTAS##########################
-
 #################################################################################################
    
 @app.route('/hola',methods=['POST'])
