@@ -174,7 +174,7 @@ def cargaReservas():
 
         print str(anio) + " mes " + str(numeroMes) + "dia" + str(dia) + "Total:" + str(total)
         pagoReserva = NodoAVL(nombreCliente,total,tarjeta)
-        sistemaPago.agregarAVL1(pagoReserva)   
+        sistemaPago.agregarAVLIni(pagoReserva)   
 
         # insertar en historial 
         idFechaIngreso = str(dia) + str(numeroMes) + str(anio)
@@ -187,6 +187,24 @@ def cargaReservas():
     return "successful"
                 
    
+@app.route('/modificarPago' , methods=['POST'])
+def modificarPago():
+    #fileJson = request.form["fileJsonStr"]
+    #objFile = json.loads(fileJson)
+    objFile = json.loads(request.data)
+    nombreCliente = objFile["nombreCliente"]
+    total = objFile["total"]
+    tarjeta = objFile["tarjeta"]
+    pagoReserva = NodoAVL(nombreCliente,total,tarjeta)
+    sistemaPago.agregarAVLIni(pagoReserva)  
+    sistemaPago.graficarArbolAVL()
+    return "successful"
+
+@app.route('/eliminarPago', methods=['POST'])
+def eliminarPago():
+    sistemaPago.eliminarINI(request.data)
+    sistemaPago.graficarArbolAVL()
+    return "successful"
 ###################################RESPUESTAS##########################
 
 #################################################################################################

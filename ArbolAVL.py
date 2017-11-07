@@ -8,20 +8,43 @@ class NodoAVL(object):
         self.derecha = derecha
         self.padre = padre
 
+class Logical():
+    def __init__ (self, valor=None):
+        self.valor = valor
+        
+    def setLogical(self, valor):
+        self.valor = valor
+        
+    def getLogical(self):
+        return self.valor
+
 class ArbolAVL(object): 
     def __init__ (self):
             self.raiz = None 
             self.encontro = None
-                         
-
-    def agregarAVL1(self, nuevoNodo): #nodo avl       
+            # eliminacion
+            self.nuevaRaiz = None
+            self.aux = None
+            self.aux2 = None
+            self.aumento = None
+            self.borrado = False
+            self.apuntado=False
+            self.apuntado2=False
+                                     
+######### INSERTAR ########
+    def agregarAVLIni(self, nuevoNodo): #nodo avl       
             temp = self.retornarAVL(nuevoNodo) 
-            if temp == None:
+            if temp == None:            # si no lo encontro
                 h = Logical(False)
                 self.raiz = self.agregarAVL(self.raiz, nuevoNodo, h)
                 print("nodo agregado correctamente"+ str(nuevoNodo.tarjeta))
             else:
-                print("ya existe")
+                if (temp.total != nuevoNodo.total) or (temp.cliente != nuevoNodo.cliente):
+                    temp.total = nuevoNodo.total 
+                    temp.cliente = nuevoNodo.cliente
+                    print("nodo modificado correctamente"+ str(nuevoNodo.tarjeta))
+                else:
+                    print "nodo ya existe"
         
     def agregarAVL(self, raiz, nuevoNodo, h):
         if raiz == None:
@@ -62,7 +85,7 @@ class ArbolAVL(object):
                     raiz.FE = 0
                     h.setLogical(False)
         return raiz    
-    
+######### BUSQUEDA ########    
     def retornarAVL(self, nuevoNodo): 
         self.encontro = None
         self.buscarAVL(self.raiz, nuevoNodo.tarjeta)
@@ -76,8 +99,7 @@ class ArbolAVL(object):
             else:
                 self.buscarAVL(raiz.izquierda, tarjeta)
                 self.buscarAVL(raiz.derecha, tarjeta) 
-                    
-       
+######### ROTACION ########       
     def rotacionID(self, nodo, nodo1):
         nodo2 = nodo1.derecha
         nodo1.derecha = nodo2.izquierda
@@ -135,7 +157,163 @@ class ArbolAVL(object):
             nodo1.FE = 0
         nodo2.FE = 0
         return nodo2    
+######### ELIMINACION #####
+    def eliminarINI(self , llave):
+        self.eliminar(llave,self.raiz)
+        
+    def eliminar(self, llave, A ):
+        if(self.raiz.izquierda!=None or self.raiz.derecha!=None):
+            if(A!=None):
+                if(A.tarjeta < llave):
+                    self.eliminar(llave,A.derecha)
+                    if(self.nuevaRaiz!=None and self.nuevaRaiz != self.raiz ):
+                        A.izquierda = self.nuevaRaiz
+                        self.nuevaRaiz = None
                     
+                    if(self.borrado==True):
+                        A.FE = A.FE - 1 
+                        self.rotarBorrado(A)
+                        if A.FE == 0:
+                            self.borrado= True
+                        else: 
+                            self.borrado= False
+                    
+                    if(self.apuntado==True):
+                        A.derecha= self.aux
+                        self.apuntado=False
+                    
+                else:
+                    if(A.tarjeta>llave):
+                        self.eliminar(llave,A.izquierda)
+                        if(self.nuevaRaiz!=None and self.nuevaRaiz != self.raiz):
+                            A.izquierda=self.nuevaRaiz
+                            self.nuevaRaiz=None
+                        
+                        if(self.borrado==True):
+                            A.FE = A.FE + 1
+                            self.rotarBorrado(A)
+                            if A.FE == 0:
+                                self.borrado= True
+                            else: 
+                                self.borrado= False
+                        
+                        if(self.apuntado==True):
+                            A.izquierda=self.aux
+                            self.apuntado=False
+                        
+                    else:
+                        if(A.tarjeta==llave):
+                            self.borrado=True
+                            self.apuntado=True
+                            if(A.izquierda == None):
+                                self.aux = A.derecha
+                            else:
+                                if(A.derecha == None):
+                                    self.aux = A.izquierda
+                                else:
+                                    self.aux= self.Reemplazar(A,A,True)                   
+            else:
+               raiz=None 
+    
+    def Reemplazar(self, A, buscado, estado):
+        if(estado==True):
+            self.Reemplazar(A.izquierda,buscado,False)
+            if(self.nuevaRaiz!=None and self.nuevaRaiz != self.raiz):
+                A.izquierda=self.nuevaRaiz
+                self.nuevaRaiz=None
+            
+            if(buscado == self.raiz):
+                self.raiz = self.aux2
+            
+            if(self.aux2 != buscado.izquierda):
+                self.aux2.izquierda=buscado.izquierda
+                buscado.izquierda=None
+            else:
+                buscado.izquierda=None
+
+            self.aux2.derecha = buscado.derecha   
+            buscado.derecha=None
+            
+            if(self.borrado==True):
+                self.aux2.FE = A.FE + 1
+                self.rotarBorrado(self.aux2)
+                if A.FE == 0:
+                    self.borrado= True
+                else: 
+                    self.borrado= False
+            
+        else:
+            if(A.derecha==None):
+                self.aux2=A
+                self.borrado=True
+                self.apuntado2=True
+            else: 
+                self.Reemplazar(A.derecha,buscado,estado)
+                if(self.nuevaRaiz!=None and self.nuevaRaiz != self.raiz):
+                    A.derecha=self.nuevaRaiz
+                    self.nuevaRaiz=None
+                
+                if(self.apuntado2==True):
+                    A.derecha=self.aux2.izquierda
+                    self.apuntado2=False
+               
+                if(self.borrado==True):
+                    A.FE = A.FE - 1 
+                    self.rotarBorrado(A)
+                    if A.FE == 0:
+                        self.borrado= True
+                    else: 
+                        self.borrado= False
+               
+        return self.aux2
+        
+    def rotarBorrado(self, A):
+            if(A.FE<-1):
+                if(A.izquierda.FE>0):
+                    if(self.raiz != A):
+                        self.rotacionID(A,A.izquierda)
+                        self.borrado=False
+                        return True
+                    else:
+                        self.raiz = self.rotacionID(A,A.izquierda)
+                        self.borrado=False
+                        return True
+                
+                else:
+                    if(self.raiz!=A):
+                        II(A,A.izquierda)
+                        self.borrado=False
+                        return true
+                    else:
+                        raiz=II(A,A.izquierda)
+                        self.borrado=False
+                        return true
+                    
+            else:
+                if(A.FE>1):
+                    if(A.derecha.FE<0):
+                        if(self.raiz != A ):
+                            self.rotacionDI(A,A.derecha)
+                            self.borrado=False
+                            return True
+                        else:
+                            self.raiz = self.rotacionDI(A,A.derecha)
+                            self.borrado=False
+                            return True
+                    else:
+                        if(self.raiz != A):
+                            self.rotacionDD(A,A.derecha)
+                            self.borrado=False
+                            return True
+                        else:
+                            self.raiz= self.rotacionDD(A,A.derecha)
+                            self.aumento=False
+                            self.borrado=False
+                            return True
+            return False
+       
+        
+######### GRAFICA #########                   
     def graficarArbolAVL(self):
         self.digraf = "digraph G{\n"
         archivo = open("SistemaPagoAVL.dot", 'w')
@@ -165,12 +343,3 @@ class ArbolAVL(object):
             pass
 
 
-class Logical():
-    def __init__ (self, valor=None):
-        self.valor = valor
-        
-    def setLogical(self, valor):
-        self.valor = valor
-        
-    def getLogical(self):
-        return self.valor
