@@ -126,6 +126,15 @@ def cargaHabitacionesB():
     habitaciones.graficarLista()
     return "successful"    
 
+@app.route('/insertarHabitacion', methods= ['POST'])
+def insertarHabitacion():
+    reservaJson = request.data
+    objReserva = json.loads(reservaJson)
+    nivel = objReserva["nivel"]
+    numero = objReserva["numero"]
+    habitaciones.insertar(Nodo(nivel,numero))
+    habitaciones.imprimir()
+    habitaciones.graficarLista()
 
 ############################## RESERVAS #########################
 @app.route('/reservas', methods=['POST'])
@@ -161,6 +170,7 @@ def cargaReservas():
         dia = fechaIngreso[6:8] 
         mes = matriz.verMes(numeroMes)
         codigo = str(matriz.aumetarContador())
+
         nuevoNodo = NodoMatriz(mes, numeroMes, anio, dia, codigo)        
         if matriz.existeReservacion(nuevoNodo) == False:      # si no existe reservacion es esa fecha
             matriz.agregarCabecerasMatriz(nuevoNodo)          # verifica y agrega cabeceras si es necesario (mes y anio)
@@ -192,10 +202,11 @@ def eliminarReserva():
     reservaJson = request.data
     objReserva = json.loads(reservaJson)
     
-    anio = objReserva["anio"]
-    numeroMes = objReserva["numeroMes"]
+    fechaIngreso =  objReserva["fechaIngreso"] # fecha ingreso
+    anio = fechaIngreso[0:4]
+    numeroMes = fechaIngreso[4:6]
+    dia = fechaIngreso[6:8] 
     mes = matriz.verMes(numeroMes)
-    dia = objReserva["dia"]
     
     nuevoNodo = NodoMatriz(mes, numeroMes, anio, dia)
     matriz.eliminarMatriz(nuevoNodo)
@@ -203,6 +214,70 @@ def eliminarReserva():
     
     return "successful"
    
+@app.route('/insertarReserva', methods=['POST'])
+def insertarReserva():
+    reservaJson = request.data
+    objReserva = json.loads(reservaJson)
+    
+    total = 0
+    contador = 0
+    nombreCliente = objReserva["nombreCliente"]
+    tarjeta = objReserva["tarjeta"]
+    numHabitacion = objReserva["numHabitacion"] # numero habitacion
+    fechaIngreso =  objReserva["fechaIngreso"] # fecha ingreso
+    fechaSalida =  objReserva["fechaSalida"] # fecha ingreso
+
+    anio = fechaIngreso[0:4]
+    numeroMes = fechaIngreso[4:6]
+    dia = fechaIngreso[6:8] 
+    mes = matriz.verMes(numeroMes)
+    
+    anioSalida = fechaSalida[0:4]
+    numeroMesSalida = fechaSalida[4:6]
+    diaSalida = fechaSalida[6:8] 
+    mesSalida = matriz.verMes(numeroMesSalida)
+    
+
+    while dia < diaSalida or dia == diaSalida:
+        print "nuevo dia"
+        codigo = str(matriz.aumetarContador())
+
+        nuevoNodo = NodoMatriz(mes, numeroMes, anio, dia)        
+        if matriz.existeReservacion(nuevoNodo) == False:      # si no existe reservacion es esa fecha
+            #nuevaTabla = TablaHash()
+            #nuevaTabla.CrearNodoInsertar(numHabitacion, numHabitacion)  
+            codigo = str(matriz.aumetarContador())
+            nuevoNodo = NodoMatriz(mes, numeroMes, anio, dia, codigo)        
+            matriz.agregarCabecerasMatriz(nuevoNodo)          # verifica y agrega cabeceras si es necesario (mes y anio)
+            if matriz.necesitaProfundidad(nuevoNodo) == True: # si ya existe un dia para el mes y anio
+                matriz.agregarProfundidad(nuevoNodo)          # agrega dia al mes y anio 
+            else:
+                matriz.agregarMatriz(nuevoNodo)               # agrega nuevo nodo despues de crear las cabeceras
+        else:
+            print "verificacion en TablaHash"
+        '''        tabla = matriz.tabla
+                indice = tabla.direccion(numHabitacion)
+                result = tabla.existe(indice)
+                if result == True:
+                    print "ya existe reservacion para esta habitacion" + str(numHabitacion)
+                else:
+                    tabla.CrearNodoInsertar(numHabitacion, numHabitacion)  
+                    tabla.graficar()  '''        
+        dia = str(int(dia) + 1)
+
+    #total += ((int(numHabitacion[0:1])*200) + int(numHabitacion[1:3]))
+
+    #print str(anio) + " mes " + str(numeroMes) + "dia" + str(dia) + "Total:" + str(total)
+    #pagoReserva = NodoAVL(nombreCliente,total,tarjeta)
+    #sistemaPago.agregarAVL1(pagoReserva)   
+
+    # insertar en historial 
+    #idFechaIngreso = str(dia) + str(numeroMes) + str(anio)
+    #historial.crearNodoInsertar(idFechaIngreso,nombreCliente, total, numHabitacion, fechaIngreso , fechaSalida )
+    
+    return "successful"
+
+
 #################################################################################################
    
 @app.route('/hola',methods=['POST'])

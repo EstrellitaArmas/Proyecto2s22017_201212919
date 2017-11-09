@@ -1,5 +1,5 @@
 digraph G{
 node [shape = record];
 rankdir = TD;
-activo_marco [label= "<r0> | <cl1>Fecha: 17112017 / marco &#92; | <r1> | <cl2>Fecha: 20102018 / david &#92; | <r2> | <cl3>Fecha: 27052011 / galindo &#92; | <r3> "];
+activo_marco [label= "<r0> | <cl1>Fecha: 17112017 / marco &#92; | <r1> | <cl2>Fecha: 20102018 / david &#92; | <r2> | <cl3>Fecha: 27052011 / estergema &#92; | <r3> | <cl4>Fecha: 27052011 / galindo &#92; | <r4> "];
 }
