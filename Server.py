@@ -47,7 +47,6 @@ def validarUsuario():
     else:
         return "false"
 
-
 @app.route('/modificarUsuario',methods=['POST']) 
 def modificarUsuario():
     nuevoNodo = NodoDoble(request.form["user"],request.form["pass"],request.form["address"],request.form["phone"],request.form["age"])
@@ -86,7 +85,6 @@ def cargaUsuarios():
     listaUsuarios.graficarLista()
 
     return "successful"
-
 
 ############################## HABITACIONES #########################
 @app.route('/habitaciones', methods=['POST'])
@@ -219,13 +217,15 @@ def insertarReserva():
     reservaJson = request.data
     objReserva = json.loads(reservaJson)
     
-    total = 0
-    contador = 0
     nombreCliente = objReserva["nombreCliente"]
     tarjeta = objReserva["tarjeta"]
     numHabitacion = objReserva["numHabitacion"] # numero habitacion
     fechaIngreso =  objReserva["fechaIngreso"] # fecha ingreso
     fechaSalida =  objReserva["fechaSalida"] # fecha ingreso
+    if objReserva["extras"] > 3 :
+        total = (50 * objReserva["extras"])
+    else :
+        total = (75 * objReserva["extras"])   
 
     anio = fechaIngreso[0:4]
     numeroMes = fechaIngreso[4:6]
@@ -275,8 +275,11 @@ def insertarReserva():
     #idFechaIngreso = str(dia) + str(numeroMes) + str(anio)
     #historial.crearNodoInsertar(idFechaIngreso,nombreCliente, total, numHabitacion, fechaIngreso , fechaSalida )
     
+    sistemaPago.graficarArbolAVL()
+    matriz.ArchivoMatriz()
+    historial.dibujarArbol() 
+   
     return "successful"
-
 
 #################################################################################################
    
