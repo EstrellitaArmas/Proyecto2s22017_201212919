@@ -46,7 +46,7 @@
                 <div class="container">
                     <!-- Brand and toggle get grouped for better mobile display -->
                     <div class="navbar-header">
-                        <h1><a href=""><B>USAC Driver</B></a></h1>                         
+                        <h1><a href=""><B>HOTEL</B></a></h1>                         
                     </div>                    
                 </div><!-- /.container-fluid -->
             </nav>

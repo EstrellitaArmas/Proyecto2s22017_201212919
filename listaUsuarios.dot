@@ -1,1 +1,1 @@
-digraph cola {n01 [label="edgar"] ; n01 -> n02 ;n02 -> n01 ;n02 [label="rene"] ; }
+digraph cola {n01 [label="edgar"] ; n01 -> n02 ;n02 -> n01 ;n02 [label="rene"] ; n02 -> n03 ;n03 -> n02 ;n03 [label="marco"] ; }

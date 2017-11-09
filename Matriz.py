@@ -1,3 +1,5 @@
+from TablaHash import TablaHash 
+
 class NodoMatriz():
     def __init__ (self, mes=None, numeroMes=None, anio=None, dia=None, codigo=None, tabla=None, arriba=None, abajo=None, derecha=None, izquierda=None, profundidad=None):
         self.mes = mes
@@ -5,7 +7,7 @@ class NodoMatriz():
         self.anio = anio
         self.dia = dia
         self.codigo = codigo
-        self.tabla = tabla
+        self.tabla = TablaHash()
         self.arriba = arriba
         self.abajo = abajo
         self.derecha = derecha
@@ -19,6 +21,7 @@ class Matriz():
         self.matrizVacia = "si"
         self.digraf = "digraph G{\n"
         self.contador = 0
+        self.tabla = None
 
     def aumetarContador(self):
         self.contador = self.contador + 1
@@ -96,10 +99,12 @@ class Matriz():
                             temp2 = temp1                   # temp2 para buscar el dia 
                             while temp2 != None:            # mientras hay nodos en los cuales buscar
                                 if temp2.dia == nuevoNodo.dia: # si el dia encontrado corresponde al que se busca
+                                    self.tabla = temp2.tabla
                                     busqueda = True         # retorna true
                                 temp2 = temp2.profundidad
                         else:                               # si no tiene mas de una reserva para ese mes y anio
                             if temp1.dia == nuevoNodo.dia:  # si el dia encotrado corresponde al que se busca                               
+                                self.tabla = temp1.tabla
                                 busqueda = True             # retrona true
                     temp1 = temp1.abajo
         return busqueda

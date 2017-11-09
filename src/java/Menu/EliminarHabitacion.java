@@ -26,7 +26,7 @@ import javax.servlet.http.HttpSession;
  * @author estre
  */
 @WebServlet(urlPatterns = {"/descargar"})
-public class Descargar extends HttpServlet {
+public class EliminarHabitacion extends HttpServlet {
 
    /**
     * Processes requests for both HTTP <code>GET</code> and

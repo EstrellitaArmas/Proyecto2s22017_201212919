@@ -2,8 +2,8 @@ digraph G{
 node [shape = record];
 rankdir = TD;
 activo_david2 [label= "<r0> | <cl1>Fecha: 20102018 / david2 &#92; | <r1> "];
-activo_david2:r0 -> activo_estergemaaaaaaaa;
+activo_david2:r0 -> activo_marco;
 activo_david2:r1 -> activo_david3;
-activo_estergemaaaaaaaa [label= "<r0> | <cl1>Fecha: 17112017 / estergemaaaaaaaa &#92; | <r1> | <cl2>Fecha: 20102018 / david &#92; | <r2> "];
+activo_marco [label= "<r0> | <cl1>Fecha: 17112017 / marco &#92; | <r1> | <cl2>Fecha: 20102018 / david &#92; | <r2> "];
 activo_david3 [label= "<r0> | <cl1>Fecha: 20102018 / david3 &#92; | <r1> | <cl2>Fecha: 20102018 / david4 &#92; | <r2> | <cl3>Fecha: 20102018 / david5 &#92; | <r3> | <cl4>Fecha: 27052011 / galindo &#92; | <r4> "];
 }

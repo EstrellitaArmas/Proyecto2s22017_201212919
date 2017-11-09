@@ -6,7 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import = "Menu.Crear"%>
-<%@page import = "Menu.Descargar"%>
+<%@page import = "Menu.EliminarHabitacion"%>
 <!DOCTYPE html>
 <html>
     <!-- Scripts-->
@@ -49,15 +49,12 @@
                 <div class="container">
                     <!-- Brand and toggle get grouped for better mobile display -->
                     <div class="navbar-header">
-                        <h1><a href=""><B>USAC Driver</B></a></h1>                         
+                        <h1><a href=""><B>HOTEL</B></a></h1>                         
                     </div>
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                        <ul class="nav navbar-nav navbar-right">
-                          <li class="active"><a href="#crear">Crear<span class="sr-only">(current)</span></a></li>
-                          <li><a href="#modificar">Modificar</a></li>
-                          <li><a href="#eliminar">Eliminar</a></li>
-                          <li><a href="#compartir">Compartir</a></li>
+                          <li class="active"><a href="#crear">INICIO<span class="sr-only">(current)</span></a></li>
                           <li>
                              <a data-toggle="dropdown" href="#" class="dropdown-toggle">
                                 <span class="user-info">
@@ -113,7 +110,7 @@
             <div class="row">
                <div class="heading">
                   <div class="title text-center arrow-right">
-                     <h4 class="">Crear</h4>
+                     <h4 class="">INICIO</h4>
                      <img class="hidden-xs" src="assets/images/right-arrow.png" alt="" />
 
                   </div>
@@ -157,7 +154,7 @@
                      <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="widget-box">
                            <div class="widget-header">
-                              <h4 class="widget-title">Descargar Archivo</h4>
+                              <h4 class="widget-title">ELIMINAR HABITACION</h4>
                            </div>
                            <div class="widget-body">
                               <div class="widget-main">                            
@@ -171,8 +168,8 @@
                                        </select>
                                     </div>
                                     <label>
-                                       <button id="descargarArchivo" class="submit">Descargar
-                                          <i class="ace-icon fa fa-arrow-right icon-on-right bigger-110"></i>
+                                       <button id="descargarArchivo" class="submit">Eliminar
+                                          <i class="ace-icon fa fa-close bigger-110"></i>
                                        </button>
                                     </label>  
                                     <div id="descargado"></div>
