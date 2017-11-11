@@ -107,7 +107,7 @@ def cargaHabitaciones():
 
 @app.route('/eliminarHabitacion',methods=['POST']) 
 def eliminarHabitacion():
-    response = habitaciones.eliminar(request.data)
+    response = habitaciones.eliminar(request.form["habitacion"])
     habitaciones.imprimir()
     habitaciones.graficarLista()
     return response
@@ -171,7 +171,7 @@ def cargaReservas():
             fechaIngreso = mensaje[3].text # fecha ingreso
         for salida in mensaje.iterfind('fechaSalida'):
             fechaSalida = salida.text 
-            print str(fechaSalida)
+            #print str(fechaSalida)
 
         anio = fechaIngreso[0:4]
         numeroMes = fechaIngreso[4:6]
@@ -182,7 +182,8 @@ def cargaReservas():
         nuevoNodo = NodoMatriz(mes, numeroMes, anio, dia, codigo) 
         if matriz.existeReservacion(nuevoNodo) == False:      # si no existe reservacion es esa dia especifico
             nuevaTabla = TablaHash()
-            nuevaTabla.CrearNodoInsertar(numHabitacion, numHabitacion)  
+            nuevaTabla.CrearNodoInsertar(numHabitacion, nombreCliente)  
+            nuevaTabla.graficar(fechaIngreso)          
             nuevoNodo = NodoMatriz(mes, numeroMes, anio, dia, codigo, nuevaTabla)        
             matriz.agregarCabecerasMatriz(nuevoNodo)          # verifica y agrega cabeceras si es necesario (mes y anio)
             if matriz.necesitaProfundidad(nuevoNodo) == True: # si ya existe un dia para el mes y anio
@@ -193,11 +194,11 @@ def cargaReservas():
             tabla = matriz.tabla
             indice = tabla.direccion(numHabitacion)
             result = tabla.existe(indice)
-            if result == True:
+            if matriz.tabla.validarEncontrado == True:
                 print "ya existe reservacion para esta habitacion" + str(numHabitacion)
             else:
-                tabla.CrearNodoInsertar(numHabitacion, numHabitacion)  
-                tabla.graficar()          
+                tabla.CrearNodoInsertar(numHabitacion, nombreCliente)  
+                tabla.graficar(fechaIngreso)  
         
         total += ((int(numHabitacion[0:1])*200) + int(numHabitacion[1:3]))
 
@@ -216,22 +217,108 @@ def cargaReservas():
     historial.dibujarArbol() 
     return "successful"
 
+@app.route('/insertarReserva', methods=['POST'])
+def insertarReserva():
+    nombreCliente = request.form["nombreCliente"]
+    tarjeta = request.form["tarjeta"]
+    habitacion = request.form["habitacion"] # numero habitacion
+    fechaIngreso =  request.form["fechaIngreso"] # fecha ingreso
+    fechaSalida =  request.form["fechaSalida"] # fecha ingreso
+    total = 0
+    if request.form["extras"] > 3 :
+        total = (50 * int(request.form["extras"]))
+    else :
+        total = (75 * int(request.form["extras"])) 
+    anio = fechaIngreso[0:4]
+    numeroMes = fechaIngreso[4:6]
+    dia = fechaIngreso[6:8] 
+    mes = matriz.verMes(numeroMes)
+    
+    anioSalida = fechaSalida[0:4]
+    numeroMesSalida = fechaSalida[4:6]
+    diaSalida = fechaSalida[6:8] 
+    mesSalida = matriz.verMes(numeroMesSalida)
+
+    #while dia < diaSalida or dia == diaSalida:
+
+    codigo = str(matriz.aumetarContador())
+    nuevoNodo = NodoMatriz(mes, numeroMes, anio, dia, codigo) 
+    if matriz.existeReservacion(nuevoNodo) == False:      # si no existe reservacion es esa dia especifico
+        nuevaTabla = TablaHash()
+        nuevaTabla.CrearNodoInsertar(habitacion, nombreCliente)  
+        nuevaTabla.graficar(fechaIngreso)          
+        nuevoNodo = NodoMatriz(mes, numeroMes, anio, dia, codigo, nuevaTabla)        
+        matriz.agregarCabecerasMatriz(nuevoNodo)          # verifica y agrega cabeceras si es necesario (mes y anio)
+        if matriz.necesitaProfundidad(nuevoNodo) == True: # si ya existe un dia para el mes y anio
+            matriz.agregarProfundidad(nuevoNodo)          # agrega dia al mes y anio 
+        else:
+            matriz.agregarMatriz(nuevoNodo)               # agrega nuevo nodo despues de crear las cabeceras
+    else:
+        tabla = matriz.existeTabla(nuevoNodo)
+        indice = tabla.direccion(habitacion)
+        result = tabla.existe(indice)
+        if matriz.tabla.validarEncontrado == True:
+            print "ya existe reservacion para esta habitacion" + str(habitacion)
+        else:
+            tabla.CrearNodoInsertar(habitacion, nombreCliente)  
+            tabla.graficar(fechaIngreso) 
+
+    total += ((int(habitacion[0:1])*200) + int(habitacion[1:3]))
+
+    #print str(anio) + " mes " + str(numeroMes) + "dia" + str(dia) + "Total:" + str(total)
+    pagoReserva = NodoAVL(nombreCliente,total,tarjeta)
+    sistemaPago.agregarAVLIni(pagoReserva)   
+
+    # insertar en historial 
+    idFechaIngreso = str(dia) + str(numeroMes) + str(anio)
+    historial.crearNodoInsertar(idFechaIngreso,nombreCliente, total, habitacion, fechaIngreso , fechaSalida )
+    
+    sistemaPago.graficarArbolAVL()
+    matriz.ArchivoMatriz()
+    historial.dibujarArbol() 
+   
+    return "successful, "
+
 @app.route('/eliminarReserva',methods=['POST']) 
 def eliminarReserva():
     #reservaJson = request.form["reservaJsonStr"]
     reservaJson = request.data
     objReserva = json.loads(reservaJson)
     
+
     anio = objReserva["anio"]
     numeroMes = objReserva["numeroMes"]
     mes = matriz.verMes(numeroMes)
     dia = objReserva["dia"]
     
     nuevoNodo = NodoMatriz(mes, numeroMes, anio, dia)
+    if matriz.existeReservacion(nuevoNodo) == True:
+        tabla = matriz.tabla
+        tabla.Eliminar(numHabitacion)
     matriz.eliminarMatriz(nuevoNodo)
     matriz.ArchivoMatriz()
     
-    return "successful"             
+    return "successful"  
+
+@app.route('/eliminarReservaB',methods=['POST']) 
+def eliminarReservaB():
+    #reservaJson = request.form["reservaJsonStr"]
+    #reservaJson = request.data
+    #objReserva = json.loads(reservaJson)
+    fechaIngreso = request.form["fechaIngreso"]
+    anio = fechaIngreso[0:4]
+    numeroMes = fechaIngreso[4:6]
+    dia = fechaIngreso[6:8] 
+    mes = matriz.verMes(numeroMes)
+    
+    nuevoNodo = NodoMatriz(mes, numeroMes, anio, dia)
+    if matriz.existeReservacion(nuevoNodo) == True:
+        tabla = matriz.tabla
+        #tabla.Eliminar(numHabitacion) //eliminacion de tabla
+    matriz.eliminarMatriz(nuevoNodo)
+    matriz.ArchivoMatriz()
+    
+    return "successful"           
    
 @app.route('/eliminarHabitacionReserva', methods= ['POST'])
 def eliminarHabitacionReserva():
@@ -250,15 +337,14 @@ def eliminarHabitacionReserva():
         tabla = matriz.tabla
         tabla.Eliminar(numHabitacion)
 
-
 @app.route('/modificarPago' , methods=['POST'])
 def modificarPago():
     #fileJson = request.form["fileJsonStr"]
     #objFile = json.loads(fileJson)
-    objFile = json.loads(request.data)
-    nombreCliente = objFile["nombreCliente"]
-    total = objFile["total"]
-    tarjeta = objFile["tarjeta"]
+    #objFile = json.loads(request.data)
+    nombreCliente = request.form["nombreCliente"]
+    total = request.form["total"]
+    tarjeta = request.form["tarjeta"]
     pagoReserva = NodoAVL(nombreCliente,total,tarjeta)
     sistemaPago.agregarAVLIni(pagoReserva)  
     sistemaPago.graficarArbolAVL()
@@ -266,22 +352,22 @@ def modificarPago():
 
 @app.route('/eliminarPago', methods=['POST'])
 def eliminarPago():
-    sistemaPago.eliminarINI(request.data)
+    sistemaPago.eliminarINI(request.form["tarjeta"])
     sistemaPago.graficarArbolAVL()
     return "successful"
 
 @app.route('/modificarHistoria', methods=['POST'])
 def modificarHistoria():
-    objFile = json.loads(request.data)
-    nodob = NodoB("-", objFile["nuevoNombre"], objFile["total"], objFile["habitacion"],"-",objFile["fechaSalida"])
-    response = historial.actualizarNombre(objFile["idFechaIngreso"], nodob)
+    #objFile = json.loads(request.data)
+    nodob = NodoB("-", request.form["nuevoNombre"], request.form["total"], request.form["habitacion"],"-",request.form["fechaSalida"])
+    response = historial.actualizarNombre(request.form["idFechaIngreso"], nodob)
     historial.dibujarArbol() 
     return response
 
 @app.route('/eliminarHistoria', methods=['POST'])
 def eliminarHistoria():
-    objFile = json.loads(request.data)
-    historial.Eliminar(objFile["idFechaIngreso"])
+    #objFile = json.loads(request.data)
+    historial.Eliminar(request.form["idFechaIngreso"])
     historial.dibujarArbol() 
     return "successful"
 

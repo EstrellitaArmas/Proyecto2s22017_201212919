@@ -6,12 +6,8 @@
 package Menu;
 
 import Helpers.Conexion;
-import Helpers.FileJsonDTO;
-import Helpers.ParserJson;
-import static Inicio.Login.setError;
 import com.squareup.okhttp.FormEncodingBuilder;
 import com.squareup.okhttp.RequestBody;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -19,15 +15,15 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author estre
  */
-@WebServlet(urlPatterns = {"/eliminarHabitacion"})
-public class EliminarHabitacion extends HttpServlet {
+@WebServlet(urlPatterns = {"/borrarInformacion"})
+public class borrarInformacion extends HttpServlet {
 
+   
    /**
     * Handles the HTTP <code>POST</code> method.
     *
@@ -39,14 +35,14 @@ public class EliminarHabitacion extends HttpServlet {
    @Override
    protected void doPost(HttpServletRequest request, HttpServletResponse response)
            throws ServletException, IOException {
-      PrintWriter out = response.getWriter();  
-      String habitacion = request.getParameter("habitacion");
-                
+      PrintWriter out = response.getWriter();
+      String idFechaIngreso = request.getParameter("idFechaIngreso");
+     
       RequestBody formBody = new FormEncodingBuilder()
-              .add("habitacion", habitacion)
-              .build();
-      String res = Conexion.postString("eliminarHabitacion", formBody);
-      System.out.print(res);
+            .add("idFechaIngreso", idFechaIngreso)
+            .build();
+      String res = Conexion.postString("eliminarHistoria", formBody);
+      System.out.println("RESPUESTA DE SERVIDOR" +res);
       out.println(res);
    }
 

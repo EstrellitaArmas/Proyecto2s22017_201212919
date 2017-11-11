@@ -1,11 +1,10 @@
-<%-- 
-    Document   : Menu
-    Created on : Sep 8, 2017, 12:08:14 AM
-    Author     : estre
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import = "Menu.Crear"%>
+<%@page import = "Menu.Reservar"%>
+<%@page import = "Menu.BorrarReserva"%>
+<%@page import = "Menu.modificarPago"%>
+<%@page import = "Menu.borrarPago"%>
+<%@page import = "Menu.modificarInformacion"%>
+<%@page import = "Menu.borrarInformacion"%>
 <%@page import = "Menu.EliminarHabitacion"%>
 <!DOCTYPE html>
 <html>
@@ -78,21 +77,16 @@
                     <div class="col-md-12 col-sm-12 col-xs-12">
                         <div class="widget-box widget-color-green2">
                            <div class="widget-header">
-                              <h4 class="widget-title lighter smaller">My Drive</h4>
+                              <h4 class="widget-title lighter smaller">Mis Reservas</h4>
                            </div>
 
                            <div class="widget-body">
                               <div class="widget-main padding-8">
                                  <ul class="collapsibleList">
-                                    <li><button class="btn btn-link" name="raizRoot" value="raizRoot">
-                                          	<i class="fa fa-folder">&nbsp;Raiz</i>
-                                       </button>
+                                    <li>
                                        <ul>
                                           <div id="carpetas">
                                              <%= session.getAttribute("arbolCarpetas") %>
-                                          </div>
-                                          <div id="archivos">
-                                             <%= session.getAttribute("arbolArchivos") %>
                                           </div>
                                        </ul>
                                     </li>
@@ -117,88 +111,260 @@
                </div>
                <div class="portfolio-wrap">
                   <div class="portfolio">
-                     <form method="post" action="crear" enctype="multipart/form-data" id="formUpload">
-                        <div class="col-md-6 col-sm-6 col-xs-12">
-                           <select id="comboCarpeta">
-                              <option value="raiz">Raiz</option>
-                              <%= session.getAttribute("arbolCarpetas")%>
-                           </select>
-                           <div class="widget-box">
-                              <div class="widget-header">
-                                 <h4 class="widget-title">Cargar Archivo</h4>
-                              </div>
-                              <div class="widget-body">
-                                 <div class="widget-main">                            
-                                    <div class="form-group">
-                                       <div class="col-xs-12">
-                                          <input type="text" readonly="" id="nomCarpeta" name="nomCarpeta" value="raiz" />
-                                       </div>
-                                       <div class="col-xs-12">
-                                          <input multiple="" type="file" name="multipleFile" id="id-input-file-3" />
-                                          <!-- /section:custom/file-input -->
-                                       </div>
-                                    </div>
-                                    <!-- #section:custom/file-input.filter -->
-                                    <label>
-                                       <button id="crearArchivo" class="submit" >
-                                          Subir Archivo
-                                          <i class="ace-icon fa fa-arrow-right icon-on-right bigger-110"></i>
-                                       </button>
-                                    </label>                            
-                                    <!-- /section:custom/file-input.filter -->
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                     </form>
                      <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="widget-box">
                            <div class="widget-header">
-                              <h4 class="widget-title">ELIMINAR HABITACION</h4>
+                              <h4 class="widget-title">&nbsp;Hacer Reservacion</h4>
                            </div>
                            <div class="widget-body">
                               <div class="widget-main">                            
                                  <div class="form-group">
                                     <div class="col-xs-12">
-                                       <input  type="text" id="statusFile" name="statusFile" readonly="">
-                                    </div> 
+                                       <input class="form-control" type="text" id="tarjeta" name="tarjeta" placeholder="Ingrese numero de tarjeta">
+                                    </div>
                                     <div class="col-xs-12">
-                                       <select id="comboFile">
-                                          <%= session.getAttribute("arbolArchivos") %>
-                                       </select>
+                                       <input class="form-control" type="text" id="habitacion" name="habitacion" placeholder="Ingrese numero de habitacion">
+                                    </div>
+                                    <div class="col-xs-12">
+                                       <div class="input-group margin-bottom-sm">
+                                          <span class="input-group-addon"><i class="fa fa-calendar fa-fw"></i>Fecha Ingreso</span>
+                                          <div class="col-xs-12">
+                                             <input class="form-control" type="text" id="año" name="año"  placeholder="año"/>
+                                          </div>
+                                          <div class="col-xs-12">
+                                             <input class="form-control" type="text" id="mes" name="mes"  placeholder="mes"/>
+                                          </div>
+                                          <div class="col-xs-12">
+                                             <input class="form-control" type="text" id="dia" name="dia"  placeholder="dia"/>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div class="col-xs-12">
+                                       <div class="input-group margin-bottom-sm">
+                                          <span class="input-group-addon"><i class="fa fa-calendar fa-fw"></i>Fecha Salida</span>
+                                          <div class="col-xs-12">
+                                             <input class="form-control" type="text" id="añoSalida" name="añoSalida"  placeholder="año"/>
+                                          </div>
+                                          <div class="col-xs-12">
+                                             <input class="form-control" type="text" id="mesSalida" name="mesSalida"  placeholder="mes"/>
+                                          </div>
+                                          <div class="col-xs-12">
+                                             <input class="form-control" type="text" id="diaSalida" name="diaSalida"  placeholder="dia"/>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div class="col-xs-12">
+                                       <input class="ace" type="checkbox" id="netflix" name="extra" />
+                                       <span class="lbl">Netflix</span>
+                                       <input class="ace" type="checkbox" id="limpieza" name="extra" />
+                                       <span class="lbl">Limpieza</span>
+                                       <input class="ace" type="checkbox" id="cable" name="extra"/>
+                                       <span class="lbl">Cable</span>
+                                       <input class="ace" type="checkbox" id="internet" name="extra"/>
+                                       <span class="lbl">Internet</span>
+                                       <input class="ace" type="checkbox" id="hielo" name="extra"/>
+                                       <span class="lbl">Hielo</span>
                                     </div>
                                     <label>
-                                       <button id="descargarArchivo" class="submit">Eliminar
+                                       <button id="reservar" name="reservar" value="reservar">
+                                          <i class="ace-icon fa fa-arrow-right icon-on-right bigger-110">Reservar</i>
+                                       </button>
+                                    </label> 
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="widget-box">
+                           <div class="widget-header">
+                              <h4 class="widget-title">EliminarReserva</h4>
+                           </div>
+                           <div class="widget-body">
+                              <div class="widget-main">                            
+                                 <div class="form-group">
+                                    <div class="col-xs-12">
+                                       <div class="input-group margin-bottom-sm">
+                                          <span class="input-group-addon"><i class="fa fa-calendar fa-fw"></i>Fecha Ingreso</span>
+                                          <div class="col-xs-12">
+                                             <input class="form-control" type="text" id="añoEliminar" name="añoEliminar"  placeholder="año"/>
+                                          </div>
+                                          <div class="col-xs-12">
+                                             <input class="form-control" type="text" id="mesEliminar" name="mesEliminar"  placeholder="mes"/>
+                                          </div>
+                                          <div class="col-xs-12">
+                                             <input class="form-control" type="text" id="diaEliminar" name="diaEliminar"  placeholder="dia"/>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div class="col-xs-12">
+                                       <input class="form-control" type="text" id="habitacionEliminar" name="habitacionEliminar" placeholder="Ingrese numero de habitacion">
+                                    </div>
+                                    <label>
+                                       <button id="eliminarReserva" name="eliminarReserva">Eliminar
                                           <i class="ace-icon fa fa-close bigger-110"></i>
                                        </button>
                                     </label>  
-                                    <div id="descargado"></div>
                                  </div>
                               </div>
                            </div>
                         </div>
                      </div>                      
+                     <b><input  type="text" id="statusReserva" name="statusReserva" readonly=""></b>
                      <div class="col-md-6 col-sm-6 col-xs-12">
                         <div class="widget-box">
                            <div class="widget-header">
-                              <h4 class="widget-title">&nbsp;Crear Carpeta</h4>
+                              <h4 class="widget-title">Pago</h4>
                            </div>
                            <div class="widget-body">
                               <div class="widget-main">                            
                                  <div class="form-group">
                                     <div class="col-xs-12">
-                                       <input class="form-control" type="text" id="nombreCarpeta" name="nombreCarpeta" placeholder="Ingrese nombre de carpeta">
-                                    </div> 
+                                       <input class="form-control" type="text" id="tarjetaModificar" name="tarjetaModificar" placeholder="Ingrese numero de tarjeta">
+                                    </div>
+                                    <div class="col-xs-12">
+                                       <input class="form-control" type="text" id="pagoModificar" name="pagoModificar" placeholder="Ingrese nuevo monto">
+                                    </div>
                                     <label>
-                                       <button id="crearCarpeta" name="crearCarpeta" value="crearCarpeta">
-                                             <i class="ace-icon fa fa-arrow-right icon-on-right bigger-110">Crear Carpeta</i>
+                                       <button id="modificarPago" name="modificarPago">Modificar Pago
+                                          <i class="ace-icon fa fa-check-circle bigger-110"></i>
                                        </button>
-                                    </label>   
+                                    </label> 
+                                    <label>
+                                       <button id="eliminarPago" name="eliminarPago">Cancelar Pago
+                                          <i class="ace-icon fa fa-close bigger-110"></i>
+                                       </button>
+                                    </label> 
                                  </div>
                               </div>
                            </div>
                         </div>
-                     </div>                          
+                     </div>
+                     <b><input  type="text" id="statusPago" name="statusPago" readonly=""></b>
+                     <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="widget-box">
+                           <div class="widget-header">
+                              <h4 class="widget-title">Modificar datos cliente de la reserva</h4>
+                           </div>
+                           <div class="widget-body">
+                              <div class="widget-main">                            
+                                 <div class="form-group">
+                                    <div class="col-xs-12">
+                                       <input class="form-control" type="text" id="nuevoNombre" name="nuevoNombre" placeholder="Ingrese nuevo nombre de cliente">
+                                    </div>
+                                    <div class="col-xs-12">
+                                       <input class="form-control" type="text" id="nuevoTotal" name="nuevototal" placeholder="Ingrese nuevo monto">
+                                    </div>
+                                    <div class="col-xs-12">
+                                       <input class="form-control" type="text" id="nuevoHabitacion" name="nuevoHabitacion" placeholder="Ingrese nueva habitacion">
+                                    </div>
+                                    <div class="col-xs-12">
+                                       <div class="input-group margin-bottom-sm">
+                                          <span class="input-group-addon"><i class="fa fa-calendar fa-fw"></i>Fecha Ingreso</span>
+                                          <div class="col-xs-12">
+                                             <input class="form-control" type="text" id="añoNuevo" name="añoNuevo"  placeholder="año"/>
+                                          </div>
+                                          <div class="col-xs-12">
+                                             <input class="form-control" type="text" id="mesNuevo" name="mesNuevo"  placeholder="mes"/>
+                                          </div>
+                                          <div class="col-xs-12">
+                                             <input class="form-control" type="text" id="diaNuevo" name="diaNuevo"  placeholder="dia"/>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <div class="col-xs-12">
+                                       <div class="input-group margin-bottom-sm">
+                                          <span class="input-group-addon"><i class="fa fa-calendar fa-fw"></i>Fecha Salida</span>
+                                          <div class="col-xs-12">
+                                             <input class="form-control" type="text" id="añoSalidaNuevo" name="añoSalidaNuevo"  placeholder="año"/>
+                                          </div>
+                                          <div class="col-xs-12">
+                                             <input class="form-control" type="text" id="mesSalidaNuevo" name="mesSalidaNuevo"  placeholder="mes"/>
+                                          </div>
+                                          <div class="col-xs-12">
+                                             <input class="form-control" type="text" id="diaSalidaNuevo" name="diaSalidaNuevo"  placeholder="dia"/>
+                                          </div>
+                                       </div>
+                                    </div>
+                                    <label>
+                                       <button id="modificarInformacion" name="modificarInformacion">Modificar Informacion
+                                          <i class="ace-icon fa fa-check-circle bigger-110"></i>
+                                       </button>
+                                    </label> 
+                                    <label>
+                                       <button id="eliminarInformacion" name="eliminarInformacion">Eliminar Informacion
+                                          <i class="ace-icon fa fa-close bigger-110"></i>
+                                       </button>
+                                    </label> 
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="widget-box">
+                           <div class="widget-header">
+                              <h4 class="widget-title">Eliminar Habitacion</h4>
+                           </div>
+                           <div class="widget-body">
+                              <div class="widget-main">                            
+                                 <div class="form-group">
+                                    <div class="col-xs-12">
+                                       <input class="form-control" type="text" id="habitacionEliminar2" name="habitacionEliminar2" placeholder="Ingrese numero de habitacion">
+                                    </div>
+                                    <label>
+                                       <button id="eliminarHabitacion" name="eliminarHabitacion">Eliminar
+                                          <i class="ace-icon fa fa-close bigger-110"></i>
+                                       </button>
+                                    </label>  
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div> 
+                     <div class="col-md-6 col-sm-6 col-xs-12">
+                        <div class="widget-box">
+                           <div class="widget-header">
+                              <h4 class="widget-title">USUARIOS</h4>
+                           </div>
+                           <div class="widget-body">
+                              <div class="widget-main">                            
+                                 <div class="form-group">
+                                    <div class="input-group margin-bottom-sm">
+                                       <span class="input-group-addon"><i class="fa fa-envelope-o fa-fw"></i></span>
+                                       <input class="form-control" type="text" id="user" name="user" placeholder="Email address">
+                                    </div>
+                                    <div class="input-group">
+                                       <span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
+                                       <input class="form-control" type="password" id="pass" name="pass" placeholder="Password">
+                                    </div>
+                                    <div class="input-group margin-bottom-sm">
+                                       <span class="input-group-addon"><i class="fa fa-home fa-fw"></i></span>
+                                       <input class="form-control" type="text" id="address" name="address" placeholder="Address">
+                                    </div>                                
+                                    <div class="input-group margin-bottom-sm">
+                                       <span class="input-group-addon"><i class="fa fa-phone fa-fw"></i></span>
+                                       <input class="form-control" type="text" id="phone" name="phone" placeholder="Phone">
+                                    </div>
+                                    <div class="input-group margin-bottom-sm">
+                                       <span class="input-group-addon"><i class="fa fa-gift fa-fw"></i></span>
+                                       <input class="form-control" type="text" id="spinner" name="age"  placeholder="Age" />
+                                    </div><br>
+                                    <label>
+                                       <button id="modificarUsuario" name="modificarUsuario">Modificar Informacion de usuario
+                                          <i class="ace-icon fa fa-check-circle bigger-110"></i>
+                                       </button>
+                                    </label> 
+                                    <label>
+                                       <button id="eliminarUsuario" name="eliminarUsuario">Eliminar usuario
+                                          <i class="ace-icon fa fa-close bigger-110"></i>
+                                       </button>
+                                    </label>  
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                     </div> 
                   </div>                  
                </div>               
             </div>
@@ -224,28 +390,10 @@
 <script src="assets/js/ace/ace.widget-box.js"></script>
 <script src="assets/js/fuelux/fuelux.tree.js"></script>
 <script src="assets/js/ace/elements.treeview.js"></script>
-
 <script type="text/javascript">
-   jQuery(function($) {
-      $('#id-input-file-3').ace_file_input({
-              style:'well',
-              btn_choose:'Click to choose',
-              btn_change:null,
-              no_icon:'ace-icon fa fa-cloud-upload',
-              droppable:true,
-              thumbnail:'small'
-              ,
-              preview_error : function(filename, error_code) {
-                      //name of the file that failed
-                      //error_code values
-                      //1 = 'FILE_LOAD_FAILED',
-                      //2 = 'IMAGE_LOAD_FAILED',
-                      //3 = 'THUMBNAIL_FAILED'
-                      //alert(error_code);
-              }
-
-      }).on('change', function(){
-      });       
+   jQuery(function($){
+      //spinner
+     
       $("#comboCarpeta").change(function (){
          var nomCarpeta = $("#comboCarpeta").val();
          $("#nomCarpeta").attr("value",nomCarpeta);
@@ -261,22 +409,132 @@
             }, function(responseText) {
                   $('#tabla').html(responseText);
             });
-        });
-      $("#crearCarpeta").click(function() {
-          var nombreVar = $('#nombreCarpeta').val();
-          $.post('crearCarpeta', {
-                nombreCarpeta : nombreVar,
+      });
+        //reservar///////////////////////////
+      $("#reservar").click(function() {
+          var tarjeta = $('#tarjeta').val();
+          var habitacion = $('#habitacion').val();
+          var año = $('#año').val();
+          var mes = $('#mes').val();
+          var dia = $('#dia').val();
+          var fechaIngreso = año + mes + dia;
+          año = $('#añoSalida').val();
+          mes = $('#mesSalida').val();
+          dia = $('#diaSalida').val();
+          var fechaSalida = año + mes + dia;
+          var extras = 0
+          $("input[type=checkbox]").each(function(){
+               if($(this).is(":checked"))
+                       extras++;
+          });
+          
+          $.post('reservar', {
+                tarjeta : tarjeta,
+                habitacion : habitacion,
+                fechaIngreso : fechaIngreso,
+                fechaSalida : fechaSalida, 
+                extras : extras,
           }, function(responseText) {
-                $('#carpetas').append(responseText)
-                $('#comboCarpeta').append(responseText)
+             console.log(responseText);
+                $("#statusReserva").attr("value",responseText);
           });
       });
-      $("#descargarArchivo").click(function() {
-          var nombreVar = $('#comboFile').val();
-          $.post('descargar', {
-                nombreArchivo : nombreVar,
+      ////////////////////////////////////////////////////
+      $("#eliminarReserva").click(function() {
+          var año = $('#añoEliminar').val();
+          var mes = $('#mesEliminar').val();
+          var dia = $('#diaEliminar').val();
+          var fechaIngreso = año + mes + dia;
+          var habitacion = $('#habitacionEliminar').val();
+          $.post('borrarReserva', {
+                fechaIngreso : fechaIngreso,
+                habitacion : habitacion,
           }, function(responseText) {
-               $("#statusFile").attr("value",responseText);
+               $("#statusReserva").attr("value",responseText);
+          });
+      });
+      $("#modificarPago").click(function() {
+          var tarjeta = $('#tarjetaModificar').val();
+          var pago = $('#pagoModificar').val();
+          console.log(pago);
+          $.post('modificarPago', {
+                tarjeta : tarjeta,
+                pago : pago,
+          }, function(responseText){
+               $("#statusPago").attr("value",responseText);
+          });
+      });
+      $("#eliminarPago").click(function() {
+          var tarjeta = $('#tarjetaModificar').val();
+          $.post('borrarPago', {
+                tarjeta : tarjeta,
+          }, function(responseText){
+               $("#statusPago").attr("value",responseText);
+          });
+      });
+      $("#modificarInformacion").click(function() {
+          var nuevoNombre  = $('#nuevoNombre').val();
+          var habitacion = $('#nuevoHabitacion').val();
+          var año = $('#añoNuevo').val();
+          var mes = $('#mesNuevo').val();
+          var dia = $('#diaNuevo').val();
+          var fechaIngreso = dia + mes + año;
+          año = $('#añoSalidaNuevo').val();
+          mes = $('#mesSalidaNuevo').val();
+          dia = $('#diaSalidaNuevo').val();
+          var fechaSalida = año + mes + dia;
+          var total = $('#nuevoTotal').val();
+          console.log(nuevoNombre+"--"+habitacion+"--"+fechaIngreso+"--"+fechaSalida+"--"+total)
+          $.post('modificarInformacion', {
+                nuevoNombre : nuevoNombre,
+                habitacion : habitacion,
+                idFechaIngreso : fechaIngreso,
+                fechaSalida : fechaSalida, 
+                total : total,
+          }, function(responseText) {
+             console.log(responseText);
+                $("#statusReserva").attr("value",responseText);
+          });
+      });
+      $("#eliminarInformacion").click(function() {
+          var año = $('#añoNuevo').val();
+          var mes = $('#mesNuevo').val();
+          var dia = $('#diaNuevo').val();
+          var fechaIngreso = dia + mes + año;
+          $.post('borrarInformacion', {
+                idFechaIngreso : fechaIngreso,
+          }, function(responseText) {
+             console.log(responseText);
+                $("#statusReserva").attr("value",responseText);
+          });
+      });
+      
+      $("#eliminarHabitacion").click(function() {
+          var habitacion = $('#habitacionEliminar2').val();
+          console.log(habitacion)
+          $.post('eliminarHabitacion', {
+                habitacion : habitacion,
+          }, function(responseText){
+               $("#statusPago").attr("value",responseText);
+          });
+      });
+      
+      $("#modificarUsuario").click(function() {
+          var user = $('#user').val();
+          var pass = $('#pass').val();
+          var address = $('#address').val();
+          var phone = $('#phone').val();
+          var age = $('#spinner').val();
+          $.post('modificarUsuario', {
+                user : user,
+                pass : pass,
+                address : address,
+                phone : phone,
+                age : age
+                
+                
+          }, function(responseText){
+               $("#statusPago").attr("value",responseText);
           });
       });
    });        

@@ -6,12 +6,8 @@
 package Menu;
 
 import Helpers.Conexion;
-import Helpers.FileJsonDTO;
-import Helpers.ParserJson;
-import static Inicio.Login.setError;
 import com.squareup.okhttp.FormEncodingBuilder;
 import com.squareup.okhttp.RequestBody;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -25,9 +21,10 @@ import javax.servlet.http.HttpSession;
  *
  * @author estre
  */
-@WebServlet(urlPatterns = {"/eliminarHabitacion"})
-public class EliminarHabitacion extends HttpServlet {
+@WebServlet( urlPatterns = {"/modificarInformacion"})
+public class modificarInformacion extends HttpServlet {
 
+   
    /**
     * Handles the HTTP <code>POST</code> method.
     *
@@ -39,14 +36,23 @@ public class EliminarHabitacion extends HttpServlet {
    @Override
    protected void doPost(HttpServletRequest request, HttpServletResponse response)
            throws ServletException, IOException {
-      PrintWriter out = response.getWriter();  
+      
+      PrintWriter out = response.getWriter();
       String habitacion = request.getParameter("habitacion");
-                
+      String idFechaIngreso = request.getParameter("idFechaIngreso");
+      String fechaSalida = request.getParameter("fechaSalida");
+      String total = request.getParameter("total");
+      String nuevoNombre = request.getParameter("nuevoNombre");
+      
       RequestBody formBody = new FormEncodingBuilder()
-              .add("habitacion", habitacion)
-              .build();
-      String res = Conexion.postString("eliminarHabitacion", formBody);
-      System.out.print(res);
+            .add("nuevoNombre",nuevoNombre)
+            .add("habitacion", habitacion)
+            .add("idFechaIngreso", idFechaIngreso)
+            .add("fechaSalida", fechaSalida)
+            .add("total", total)
+            .build();
+      String res = Conexion.postString("modificarHistoria", formBody);
+      System.out.println("RESPUESTA DE SERVIDOR" +res);
       out.println(res);
    }
 

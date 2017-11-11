@@ -99,15 +99,41 @@ class Matriz():
                             temp2 = temp1                   # temp2 para buscar el dia 
                             while temp2 != None:            # mientras hay nodos en los cuales buscar
                                 if temp2.dia == nuevoNodo.dia: # si el dia encontrado corresponde al que se busca
+                                    print "TABLA HASH EN EL DIA " + str(temp2.dia)
                                     self.tabla = temp2.tabla
                                     busqueda = True         # retorna true
                                 temp2 = temp2.profundidad
                         else:                               # si no tiene mas de una reserva para ese mes y anio
                             if temp1.dia == nuevoNodo.dia:  # si el dia encotrado corresponde al que se busca                               
+                                print "TABLA HASH EN EL DIA " + str(temp1.dia)
                                 self.tabla = temp1.tabla
                                 busqueda = True             # retrona true
                     temp1 = temp1.abajo
         return busqueda
+    
+    def existeTabla(self, nuevoNodo):
+        busqueda = False
+        if self.existeMes(nuevoNodo) == True:               # esta en el nodo de un mes en especifico?
+            nodoMesTemp = self.obtenerMes(nuevoNodo)        
+            if nodoMesTemp.abajo != None:                   # si lo encontro procede a buscar el anio
+                temp1 = nodoMesTemp.abajo
+                while temp1 != None:                        # mientras hay nodos en los cuales buscar
+                    if temp1.anio == nuevoNodo.anio:        # si el anio encontrado corresponde al que se busca?
+                        if temp1.profundidad != None:       # si ya tiene mas de una reserva para ese mes y anio
+                            temp2 = temp1                   # temp2 para buscar el dia 
+                            while temp2 != None:            # mientras hay nodos en los cuales buscar
+                                if temp2.dia == nuevoNodo.dia: # si el dia encontrado corresponde al que se busca
+                                    print "TABLA HASH EN EL DIA " + str(temp2.dia)
+                                    return temp2.tabla
+                                    busqueda = True         # retorna true
+                                temp2 = temp2.profundidad
+                        else:                               # si no tiene mas de una reserva para ese mes y anio
+                            if temp1.dia == nuevoNodo.dia:  # si el dia encotrado corresponde al que se busca                               
+                                print "TABLA HASH EN EL DIA " + str(temp1.dia)
+                                return temp1.tabla
+                                busqueda = True             # retrona true
+                    temp1 = temp1.abajo
+        return "no encuentra"
     
 ###################################### AGREGA COLUMNAS ############################    
     def agregarInicioMes(self, nuevoNodo): #agregarInicioDepartamento
@@ -588,6 +614,33 @@ class Matriz():
         outfile.write(texto)
         outfile.close()
         
+    def graficarProfundidad(self, nuevoNodo):
+        if self.existeMes(nuevoNodo) == True:
+            nodoMesTemp = self.obtenerMes(nuevoNodo) #esta en el nodo de un departamento en especifico
+            if nodoMesTemp.abajo != None:
+                temp1 = nodoMesTemp.abajo
+                archivo=open('Profundidad.txt','w')             
+                archivo.write('digraph G{\n')       
+                archivo.write("node [shape = record];\n");
+                archivo.write("rankdir = LR;\n");   
+                
+                while temp1 != None:
+                    if temp1.anio == nuevoNodo.anio:
+                        temp2 = temp1
+                        while temp2 != None:
+                            archivo.write("nodo_"+str(temp2.dia) + " [label="+str(temp2.dia)+ "]\n")
+                            #print("anio: " + str(temp2.anio) + " mes: " + str(temp2.mes) + " dia: " + str(temp2.dia))
+                            temp2 = temp2.profundidad
+                        temp2 = temp1
+                        while temp2 != None:
+                            if temp2.profundidad != None:
+                                archivo.write("nodo_"+str(temp2.dia)+" ->"+"nodo_"+str(temp2.profundidad.dia)+"\n")   
+                            temp2 = temp2.profundidad
+                    temp1 = temp1.abajo  
+                archivo.write('}')
+                archivo.close()                
+
+   
 ###################################### ELIMINA NODOS ##################################        
     def eliminarMatriz(self, nuevoNodo):
         if self.existeMes(nuevoNodo) == True:

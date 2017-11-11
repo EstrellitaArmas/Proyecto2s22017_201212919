@@ -180,6 +180,36 @@ class ArbolB(object):
 				valorEncontrado = self.retornarNodo(clave, raiz.ramas[pos])
 		return valorEncontrado
 
+	#RetornarHabitaciones
+	def retornarHabitaciones(self, nombreUsuario):	
+		self.todasLasHabitaciones = ""
+		self.RetornarArbolHabitaciones(self.inicio, nombreUsuario)
+		return self.todasLasHabitaciones 
+	
+	#Retornar Habitaciones
+	def RetornarArbolHabitaciones(self, raiz, nombreUsuario):
+		nodo = raiz
+	
+		if(nodo == None):
+			variable = "Hola Mundo"
+		else:
+			if (nodo.cuentas != 0):
+				k=1
+				while k <= nodo.cuentas:
+					if nodo.claves[k - 1].Nombre == nombreUsuario:
+						self.todasLasHabitaciones += str(nodo.claves[k - 1].Habitacion) + "@"
+					k+=1
+				i=0
+				while i <= nodo.cuentas:
+					if (nodo.ramas[i] != None):
+						if (nodo.ramas[i].cuentas != 0):					
+							hola = "Mundo xD"
+					i+=1
+	
+				j=0
+				while j <= nodo.cuentas:
+					self.RetornarArbolHabitaciones(nodo.ramas[j], nombreUsuario)
+					j+=1
 
 ############################# GRAFICAR ######################################
 	#Crear Archivo
@@ -256,9 +286,7 @@ class ArbolB(object):
 	def InsertarNodosLista(self, raiz):
 		nodo = raiz		
 		
-		if(nodo == None):
-			print("No Hay Nada")
-		else:
+		if(nodo != None):
 			if (nodo.cuentas != 0):
 				k=1
 				while k <= nodo.cuentas:

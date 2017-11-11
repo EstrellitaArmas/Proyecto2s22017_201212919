@@ -26,7 +26,6 @@ class ListaB:
 			nodo = NodoLB(self.contadorRegistro, nodoB, self.indiceLista)
 			self.indiceLista = self.indiceLista + 1
 			aux.siguiente = nodo
-		print("Inserto En Lista")
 				
 	
 	def consultarLista(self):

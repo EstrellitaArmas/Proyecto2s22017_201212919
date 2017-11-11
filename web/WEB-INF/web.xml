@@ -6,19 +6,31 @@
         </session-timeout>
     </session-config>
     <servlet>
-        <servlet-name>ActionServlet</servlet-name>
-        <servlet-class>Menu.ActionServlet</servlet-class>
+        <servlet-name>Reservar</servlet-name>
+        <servlet-class>Menu.Reservar</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>CrearCarpeta</servlet-name>
-        <servlet-class>Menu.CrearCarpeta</servlet-class>
+        <servlet-name>BorrarReserva</servlet-name>
+        <servlet-class>Menu.BorrarReserva</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>Crear</servlet-name>
-        <servlet-class>Menu.Crear</servlet-class>
+        <servlet-name>modificarPago</servlet-name>
+        <servlet-class>Menu.modificarPago</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>Descargar</servlet-name>
+        <servlet-name>borrarPago</servlet-name>
+        <servlet-class>Menu.borrarPago</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>modificarInformacion</servlet-name>
+        <servlet-class>Menu.modificarInformacion</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>borrarInformacion</servlet-name>
+        <servlet-class>Menu.borrarInformacion</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EliminarHabitacion</servlet-name>
         <servlet-class>Menu.EliminarHabitacion</servlet-class>
     </servlet>
 </web-app>

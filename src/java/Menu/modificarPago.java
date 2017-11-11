@@ -6,12 +6,8 @@
 package Menu;
 
 import Helpers.Conexion;
-import Helpers.FileJsonDTO;
-import Helpers.ParserJson;
-import static Inicio.Login.setError;
 import com.squareup.okhttp.FormEncodingBuilder;
 import com.squareup.okhttp.RequestBody;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -25,9 +21,12 @@ import javax.servlet.http.HttpSession;
  *
  * @author estre
  */
-@WebServlet(urlPatterns = {"/eliminarHabitacion"})
-public class EliminarHabitacion extends HttpServlet {
+@WebServlet( urlPatterns = {"/modificarPago"})
+public class modificarPago extends HttpServlet {
 
+   
+
+   
    /**
     * Handles the HTTP <code>POST</code> method.
     *
@@ -39,14 +38,20 @@ public class EliminarHabitacion extends HttpServlet {
    @Override
    protected void doPost(HttpServletRequest request, HttpServletResponse response)
            throws ServletException, IOException {
-      PrintWriter out = response.getWriter();  
-      String habitacion = request.getParameter("habitacion");
-                
+      PrintWriter out = response.getWriter();
+      String tarjeta = request.getParameter("tarjeta");
+      String total = request.getParameter("pago");
+      
+      HttpSession sesion = request.getSession(true);
+      String user = sesion.getAttribute("sesionusuario").toString();
+      
       RequestBody formBody = new FormEncodingBuilder()
-              .add("habitacion", habitacion)
-              .build();
-      String res = Conexion.postString("eliminarHabitacion", formBody);
-      System.out.print(res);
+            .add("nombreCliente",user)
+            .add("tarjeta", tarjeta)
+            .add("total", total)
+            .build();
+      String res = Conexion.postString("modificarPago", formBody);
+      System.out.println(res);
       out.println(res);
    }
 
