@@ -79,7 +79,7 @@ class ListaEnlazada(object):
         print "fin de la lista" 
 
     def graficarLista(self):
-        archivo = open("listaHabitaciones.dot", 'w')
+        archivo = open("listaHabitaciones.txt", 'w')
         colaGraphiz = "digraph habitaciones {"
         contador = 0
         contadorMas = 1 

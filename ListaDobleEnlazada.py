@@ -71,7 +71,7 @@ class ListaDobleEnlazada(object):
         return "Informacion Incorrecta"    
 
     def graficarLista(self):
-        archivo = open("listaUsuarios.dot", 'w')
+        archivo = open("listaUsuarios.txt", 'w')
         colaGraphiz = "digraph cola {"
         contador = 0
         contadorMas = 1 

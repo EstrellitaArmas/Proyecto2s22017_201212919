@@ -214,7 +214,7 @@ class ArbolB(object):
 ############################# GRAFICAR ######################################
 	#Crear Archivo
 	def dibujarArbol(self ):
-		archivo=open('arbolBHistorial.dot', 'w')
+		archivo=open('arbolBHistorial.txt', 'w')
 		archivo.write('digraph G{\n')
 		archivo.write("node [shape = record];\n");3
 		archivo.write("rankdir = TD;\n");
